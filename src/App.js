@@ -2,20 +2,25 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import "./App.css";
+// The below line use to import data from file, We don't need it because we used API
 // import { robots } from "./components/robots";
 import CardList from "./components/cardlist";
 import SearchBox from "./components/SearchBox";
-import { setSearchField } from "./actions";
+import { setSearchField, requestRobots } from "./actions";
 
 const mapStateToProps = (state) => {
   return {
-    searchField: state.searchRobots,
+    searchField: state.searchRobots.searchField,
+    robots: state.requestRobots.robots,
+    isPending: state.requestRobots.isPending,
+    error: state.requestRobots.error,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onSearchChange: (event) => dispatch(setSearchField(event.target.value)),
+    onRequestRobots: () => dispatch(requestRobots()),
   };
 };
 class App extends Component {
@@ -27,29 +32,30 @@ class App extends Component {
     };
   }
 
+  // We didn't use this function because we moved to redux
   // Function to catch search field in html
-  onSearchChange = (event) => {
-    this.setState({ searchField: event.target.value });
-  };
+  // onSearchChange = (event) => {
+  //   this.setState({ searchField: event.target.value });
+  // };
 
   componentDidMount() {
-    console.log("this.state.store-----------");
-    console.log(this.props.store);
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => response.json())
-      .then((users) => this.setState({ robots: users }));
+    this.props.onRequestRobots();
+    // fetch("https://jsonplaceholder.typicode.com/users")
+    //   .then((response) => response.json())
+    //   .then((users) => this.setState({ robots: users }));
   }
 
   render() {
-    const filteredRobots = this.state.robots.filter((robot) => {
+    const { searchField, onSearchChange, robots, isPending } = this.props;
+    const filteredRobots = robots.filter((robot) => {
       return robot.name
         .toLowerCase()
-        .includes(this.state.searchField.toLowerCase().trim());
+        .includes(searchField.toLowerCase().trim());
     });
     return (
       <div className="tc">
         <h1>This is app page</h1>
-        <SearchBox searchChange={this.onSearchChange} />
+        <SearchBox searchChange={onSearchChange} />
         <CardList robots={filteredRobots} />
       </div>
     );

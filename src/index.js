@@ -6,10 +6,20 @@ import * as serviceWorker from "./serviceWorker";
 import "tachyons";
 // Import for react
 import { Provider } from "react-redux";
-import { createStore } from "redux";
-import { searchRobots } from "./reducers";
+import { createStore, applyMiddleware, combineReducers } from "redux";
+import { searchRobots, requestRobots } from "./reducers";
+import { createLogger } from "redux-logger";
 
-const store = createStore(searchRobots);
+// Redux Thunk to handel async for data
+import thunkMiddlewware from "redux-thunk";
+
+const logger = createLogger();
+
+const rootReducer = combineReducers({ searchRobots, requestRobots });
+const store = createStore(
+  rootReducer,
+  applyMiddleware(thunkMiddlewware, logger)
+);
 
 ReactDOM.render(
   <React.StrictMode>
