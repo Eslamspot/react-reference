@@ -7,6 +7,7 @@ import "./App.css";
 import CardList from "./components/cardlist";
 import SearchBox from "./components/SearchBox";
 import { setSearchField, requestRobots } from "./actions";
+import CounterButton from "./components/CounterButton";
 
 const mapStateToProps = (state) => {
   return {
@@ -24,13 +25,17 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      robots: [],
-      searchField: "",
-    };
-  }
+  /**
+   No need to use constructor with redux 
+    if you can use start and redux in same project  you have to activate it back 
+  */
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     robots: [],
+  //     searchField: "",
+  //   };
+  // }
 
   // We didn't use this function because we moved to redux
   // Function to catch search field in html
@@ -55,8 +60,9 @@ class App extends Component {
     return (
       <div className="tc">
         <h1>This is app page</h1>
+        <CounterButton />
         <SearchBox searchChange={onSearchChange} />
-        <CardList robots={filteredRobots} />
+        {isPending ? <h1>Loading...</h1> : <CardList robots={filteredRobots} />}
       </div>
     );
   }
