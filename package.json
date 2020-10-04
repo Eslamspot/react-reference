@@ -1,6 +1,6 @@
 {
-  "homepage": "http://eslamspot.github.io/eslamzaki.com-react",
-  "name": "eslamzaki.com-react",
+  "homepage": "http://eslamspot.github.io/react-reference",
+  "name": "react-reference",
   "version": "0.1.0",
   "private": false,
   "dependencies": {
@@ -41,8 +41,5 @@
   "devDependencies": {
     "gh-pages": "^3.1.0",
     "redux-logger": "^3.0.6"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/@eslamspot"
   }
 }
